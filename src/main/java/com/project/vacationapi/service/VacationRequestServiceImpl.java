@@ -4,12 +4,14 @@ import com.project.vacationapi.entity.VacationRequest;
 import com.project.vacationapi.exception.ResourceNotFoundException;
 import com.project.vacationapi.repository.EmployeeRepository;
 import com.project.vacationapi.repository.VacationRequestRepository;
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
+
 
 @Service
 public class VacationRequestServiceImpl implements VacationRequestService {
@@ -20,7 +22,10 @@ public class VacationRequestServiceImpl implements VacationRequestService {
     @Autowired
     private EmployeeRepository employeeRepository;
 
-
+    public VacationRequestServiceImpl(VacationRequestRepository vacationRequestRepository, EmployeeRepository employeeRepository) {
+        this.vacationRequestRepository = vacationRequestRepository;
+        this.employeeRepository = employeeRepository;
+    }
 
 
     @Override
