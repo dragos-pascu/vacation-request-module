@@ -27,7 +27,7 @@ public class VacationRequestController {
     @Autowired
     HolidayService holidayService;
 
-    @PostMapping("/vacation-requests")
+    @PostMapping("/create-vacation-request")
     public VacationRequest createVacationRequest(@RequestBody VacationRequest vacationRequest,
                                                  @Valid @RequestParam Long employeeId) {
 

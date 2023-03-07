@@ -3,6 +3,7 @@ package com.project.vacationapi.controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.project.vacationapi.entity.Employee;
+import com.project.vacationapi.entity.Holiday;
 import com.project.vacationapi.entity.VacationRequest;
 import com.project.vacationapi.service.EmployeeService;
 import com.project.vacationapi.service.HolidayService;
@@ -27,6 +28,9 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -72,7 +76,7 @@ public class VacationRequestControllerTest {
         Mockito.when(vacationRequestService.createVacationRequest(Mockito.any(VacationRequest.class), Mockito.anyLong()))
                 .thenReturn(vacationRequest);
 
-        mockMvc.perform(MockMvcRequestBuilders.post("/api/vacation-requests")
+        mockMvc.perform(MockMvcRequestBuilders.post("/api/create-vacation-request")
                         .contentType(MediaType.APPLICATION_JSON)
                         .param("employeeId", employeeId.toString())
                         .content(objectMapper.writeValueAsString(vacationRequest))) // use the objectMapper here
@@ -87,7 +91,6 @@ public class VacationRequestControllerTest {
 
 
     @Test
-    @Disabled
     public void testUpdateVacationRequest() throws Exception {
         Long employeeId = 1L;
         Employee employee = Employee.builder()
@@ -124,7 +127,7 @@ public class VacationRequestControllerTest {
         ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.registerModule(new JavaTimeModule());
 
-        mockMvc.perform(MockMvcRequestBuilders.put("/api/vacation-requests/update-request/" + vacationRequestId)
+        mockMvc.perform(MockMvcRequestBuilders.put("/api/update-request/" + vacationRequestId)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(updatedVacationRequest)))
                 .andExpect(MockMvcResultMatchers.status().isOk())
@@ -154,5 +157,79 @@ public class VacationRequestControllerTest {
                 .getAvailableVacationDays(employeeId, year);
 
     }
+
+    @Test
+    public void testGetAllVacationRequests() throws Exception {
+
+        List<VacationRequest> requests = Arrays.asList(
+
+        VacationRequest.builder()
+                .id(1L)
+                .startDate(LocalDate.now())
+                .endDate(LocalDate.now().plusDays(5))
+                .status(VacationRequest.VacationRequestStatus.PENDING)
+                .createdAt(LocalDateTime.now())
+                .updatedAt(LocalDateTime.now())
+                .build(),
+
+        VacationRequest.builder()
+                .id(2L)
+                .startDate(LocalDate.now())
+                .endDate(LocalDate.now().plusDays(10))
+                .status(VacationRequest.VacationRequestStatus.APPROVED)
+                .createdAt(LocalDateTime.now())
+                .updatedAt(LocalDateTime.now())
+                .build()
+
+
+        );
+
+
+        Mockito.when(vacationRequestService.getAllVacationRequests()).thenReturn(requests);
+
+        mockMvc.perform(MockMvcRequestBuilders.get("/api/get-requests")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.jsonPath("$[0].id", Matchers.is(1)))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[0].status", Matchers.is(VacationRequest.VacationRequestStatus.PENDING.name())))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[1].id", Matchers.is(2)))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[1].status", Matchers.is(VacationRequest.VacationRequestStatus.APPROVED.name())));
+
+        Mockito.verify(vacationRequestService, Mockito.times(1)).getAllVacationRequests();
+    }
+
+
+    @Test
+    public void testGetHolidays() throws Exception {
+        List<Holiday> holidays = Arrays.asList(
+
+                Holiday.builder().
+                        id(1L).
+                        name("New Year's Day").
+                        date(LocalDate.of(2023, 1, 1)).
+                        build(),
+                Holiday.
+                        builder().
+                        id(2L).
+                        name("St. Andrew's Day").
+                        date(LocalDate.of(2023, 11, 30)).
+                        build()
+
+        );
+        Mockito.when(holidayService.getHolidays()).thenReturn(holidays);
+
+        mockMvc.perform(MockMvcRequestBuilders.get("/api/holidays")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.jsonPath("$[0].name", Matchers.is("New Year's Day")))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[0].date", Matchers.is("2023-01-01")))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[1].name", Matchers.is("St. Andrew's Day")))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[1].date", Matchers.is("2023-11-30")));
+
+        Mockito.verify(holidayService, Mockito.times(1)).getHolidays();
+
+
+    }
+
 
 }
