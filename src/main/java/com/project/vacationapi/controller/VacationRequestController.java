@@ -27,11 +27,6 @@ public class VacationRequestController {
     @Autowired
     HolidayService holidayService;
 
-    @GetMapping("/api")
-    public String helloWorld() {
-        return "welcome to vacation api.";
-    }
-
     @PostMapping("/vacation-requests")
     public VacationRequest createVacationRequest(@RequestBody VacationRequest vacationRequest,
                                                  @Valid @RequestParam Long employeeId) {
