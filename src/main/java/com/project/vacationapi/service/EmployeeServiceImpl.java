@@ -29,8 +29,5 @@ public class EmployeeServiceImpl implements EmployeeService{
         return totalVacationDays - usedVacationDays;
     }
 
-    @Override
-    public Optional<Employee> getEmployeeById(long l) {
-        return employeeRepository.findById(l);
-    }
+
 }
