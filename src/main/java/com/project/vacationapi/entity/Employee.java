@@ -1,4 +1,5 @@
 package com.project.vacationapi.entity;
+import com.project.vacationapi.user.User;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -18,6 +19,10 @@ public class Employee {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @OneToOne
+    @JoinColumn(name = "user_id")
+    private User user;
+
     @Column(name = "first_name", nullable = false)
     private String firstName;
 
@@ -31,7 +36,6 @@ public class Employee {
     private int vacationDays = STANDARD_VACATION_DAYS;
 
 
-    // Constructors, getters, and setters
 
 
 }
