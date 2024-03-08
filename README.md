@@ -15,9 +15,9 @@ The module is written in Java using the SpringBoot framework, and data must be p
 ## Endpoints
 The following endpoints are exposed by the VacationRequestController:
 
-POST /api/v1/vacation-requests - creates a new vacation request for a specified employee
-PUT /api/v1/update-request/{id} - modifies an existing vacation request
-GET /api/v1/employees/{employeeId}/available-vacation-days - gets the number of available vacation days for a given employee and year
-GET /api/v1/get-requests - gets a list of all existing vacation requests
-GET /api/v1/holidays - gets a list of all national holidays
+* POST /api/v1/vacation-requests - creates a new vacation request for a specified employee
+* PUT /api/v1/update-request/{id} - modifies an existing vacation request
+* GET /api/v1/employees/{employeeId}/available-vacation-days - gets the number of available vacation days for a given employee and year
+* GET /api/v1/get-requests - gets a list of all existing vacation requests
+* GET /api/v1/holidays - gets a list of all national holidays
 All endpoints require JWT authentication with either a user or admin role. Admin role is required for accessing the get-requests and holidays endpoints.
