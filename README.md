@@ -20,4 +20,5 @@ The following endpoints are exposed by the VacationRequestController:
 * GET /api/v1/employees/{employeeId}/available-vacation-days - gets the number of available vacation days for a given employee and year
 * GET /api/v1/get-requests - gets a list of all existing vacation requests
 * GET /api/v1/holidays - gets a list of all national holidays
+
 All endpoints require JWT authentication with either a user or admin role. Admin role is required for accessing the get-requests and holidays endpoints.
