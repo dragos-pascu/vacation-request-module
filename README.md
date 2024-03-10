@@ -6,7 +6,7 @@ The goal of this project is to develop a REST API vacation module that lets user
 
 In addition to the basic functionality, the module provides minimal test coverage for both unit and integration tests.
 
-Authentication
+## Authentication
 This module implements JWT authentication for user and admin roles.
 
 ## Requirements
